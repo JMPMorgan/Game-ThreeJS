@@ -1,0 +1,47 @@
+.list-style{
+    list-style: none;
+    background-color: #440a0a;
+}
+
+.list-style>li{
+    margin: 1.5rem 0rem;
+    padding: 0rem  30rem;
+    height: 5rem;
+}
+
+.btnGame{
+    color: #6c3f26;
+    border-radius: .25rem;
+    width: 15rem;
+    padding: 0.5rem 1rem;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ffe169;
+    border: 4.5px solid #6c3f26;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: 0.15s, 0.15s, 0.15s, 0.15s;
+    transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
+    transition-delay: 0s, 0s, 0s, 0s;
+}
+
+.btnGame:hover{
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.bg-image{
+    height: 100%;
+    background-image: url("../resources/images/bgbutton.png");
+    background-size: 20rem 100%;
+    background-color: #6c3f261f;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.bg-image:hover{
+    background-blend-mode: multiply;
+}
