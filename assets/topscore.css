@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'Berlin Sans FB';
+    src: url('../resources/font/BerlinSansFBDemi-Bold.woff') format('woff');
+  }
+  
+  
+  *,html,body{
+    font-family: 'Berlin Sans FB',Arial, Helvetica, sans-serif;
+  }
+
 @property --myColor1 {
     syntax: '<color>';
     initial-value:  rgba(228,182,73,1);
