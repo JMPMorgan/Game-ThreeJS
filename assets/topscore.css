@@ -1,3 +1,15 @@
+@property --myColor1 {
+    syntax: '<color>';
+    initial-value:  rgba(228,182,73,1);
+    inherits: false;
+  }
+  
+  @property --myColor2 {
+    syntax: '<color>';
+    initial-value: rgba(190,39,57,1);
+    inherits: false;
+  }
+
 body {
     margin: 0;
 }
@@ -5,4 +17,29 @@ body {
 canvas {
     width: 100%;
     height: 100%;
+}
+
+#bg-image{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+#container-table{
+    padding: 12rem 0rem 0rem;
+}
+
+.table{
+    width: 30rem;
+    border-color: #000;
+    font-size: large;
+}
+
+tbody>tr:hover{
+    background: linear-gradient(var(--myColor1), var(--myColor2));
+}
+
+tbody>tr>th{
+    
 }
