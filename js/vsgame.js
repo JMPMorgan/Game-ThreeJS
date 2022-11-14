@@ -4,7 +4,7 @@ import { MTLLoader } from "./three/MTLLoader.js";
 import { FBXLoader } from "./three/FBXLoader.js";
 import { OBJLoader } from "./three/OBJLoader.js";
 import { OrbitControls } from "./three/OrbitControls.js";
-import { objects } from "./resources.js";
+import { objects } from "./resourcesvs.js";
 
 const canvas = document.querySelectorAll(".gamecontainer");
 //const canvas2 = document.querySelector("#game_2");
@@ -44,7 +44,7 @@ window.onload = async () => {
   //Boiler Plate Code
 
   for (let index = 0; index < canvas.length; index++) {
-    createCamara();
+    createCamara(index);
     createRenderer(canvas[index]);
   }
 
@@ -203,8 +203,12 @@ orbitControls.enableZoom = true;
 document.addEventListener("keydown", (event) => {
   const { keyCode } = event;
   const camion = scene.getObjectByName("camion", true);
+  const camion2 = scene.getObjectByName("camion2", true);
+  console.log(camion2);
+  console.log(camion);
   const deltaTime = 1;
   console.log(deltaTime);
+  console.log(keyCode);
   switch (keyCode) {
     case 87:
       camion.translateZ(1 * deltaTime);
@@ -217,6 +221,12 @@ document.addEventListener("keydown", (event) => {
       break;
     case 68:
       camion.translateX(1 * deltaTime);
+      break;
+    case 38:
+      camion2.translateZ(1 * deltaTime);
+      break;
+    case 40:
+      camion2.translateZ(-1 * deltaTime);
       break;
 
     default:
@@ -249,19 +259,25 @@ const cloneObjects = (quantity, position, objToClone, objectName) => {
     //position.x += 0.25;
     obj.position.set(position.x, position.y, position.z);
     obj.name = `${objectName}${index + 1}`;
+    console.log(obj.name);
+
     colisionObjetcs.push(obj);
     scene.add(obj);
   }
 };
 
-const createCamara = () => {
+const createCamara = (index) => {
   const camera = new THREE.PerspectiveCamera();
   camera.position.set(positionCamara.x, positionCamara.y, positionCamara.z);
-  const busObj = scene.getObjectByName("camion", true);
+  let busObj = scene.getObjectByName(`camion`, true);
+  if (index > 0) {
+    busObj = scene.getObjectByName(`camion2`, true);
+  }
   //HACIA DONDE ESTA VIENDO
   camera.lookAt(100, 0, 0);
   //HACIA DONDE ESTA ROTANDO
   camera.rotateY(-1.5);
+  console.log(busObj);
   busObj.add(camera);
   console.log(busObj);
   cameras.push(camera);
