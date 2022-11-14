@@ -1,6 +1,7 @@
 import * as THREE from "./three/three.module.js";
 import { GLTFLoader } from "./three/GLTFLoader.js";
 import { MTLLoader } from "./three/MTLLoader.js";
+import { FBXLoader } from "./three/FBXLoader.js";
 import { OBJLoader } from "./three/OBJLoader.js";
 import { OrbitControls } from "./three/OrbitControls.js";
 import { objects } from "./resources.js";
@@ -12,6 +13,8 @@ const glLoader = new GLTFLoader();
 const renderer = new THREE.WebGL1Renderer({
   canvas: canvas,
 });
+const clock = new THREE.Clock();
+let mixer;
 
 const colisionObjetcs = [];
 
@@ -28,6 +31,7 @@ window.onload = async () => {
       ? await loadObj(objects[index])
       : await loadGlb(objects[index]);
   }
+  await loadFBX();
   const light = new THREE.DirectionalLight(0xffffff, 2);
   light.position.set(2.5, 20, 10);
   scene.add(light);
@@ -142,6 +146,25 @@ const loadObj = async ({
   }
   scene.add(obj);
 };
+
+const loadFBX = async () => {
+  const loader = new FBXLoader();
+  const object = await loader.loadAsync("/assets/models/Payaso/payaso.fbx");
+  object.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  console.log(object);
+  object.position.set(-0.5, 0, 20);
+  object.scale.set(0.25, 0.25, 0.25);
+  mixer = new THREE.AnimationMixer(object);
+  const action = mixer.clipAction(object.animations[0]);
+  action.play();
+  scene.add(object);
+};
+
 function findType(object, type) {
   object.children.forEach((child) => {
     if (child.type === type) {
@@ -155,6 +178,8 @@ function animate() {
   requestAnimationFrame(animate);
   const camion = scene.getObjectByName("camion");
   //console.log(colisionObjetcs);
+  const delta = clock.getDelta();
+  if (mixer) mixer.update(delta);
   for (let index = 0; index < colisionObjetcs.length; index++) {
     const hasColision = detectColision(camion, colisionObjetcs[index]);
     hasColision ? console.log("Colision") : "";
@@ -163,11 +188,13 @@ function animate() {
 }
 
 //Orbit Controls
+/*
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.enableDamping = true;
 orbitControls.minDistance = 10;
 orbitControls.maxDistance = 10;
 orbitControls.enableZoom = true;
+*/
 
 document.addEventListener("keydown", (event) => {
   const { keyCode } = event;
@@ -213,7 +240,7 @@ const detectColision = (object1, object2) => {
 const cloneObjects = (quantity, position, objToClone, objectName) => {
   for (let index = 0; index < quantity; index++) {
     const obj = objToClone.clone();
-    console.log(index);
+    //console.log(index);
     position.z += 5;
     //position.x += 0.25;
     obj.position.set(position.x, position.y, position.z);
